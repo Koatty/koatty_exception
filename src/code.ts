@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2021-11-19 00:53:19
- * @LastEditTime: 2021-11-19 01:25:33
+ * @LastEditTime: 2021-11-19 02:30:04
  */
 
 /**
@@ -505,7 +505,7 @@ export const GrpcStatusCodeMap = new Map([
 
 /**
  * Convert HttpStatusCode to GrpcStatusCode
- *
+ * https://chromium.googlesource.com/external/github.com/grpc/grpc/+/refs/heads/chromium-deps/2016-10-25/doc/http-grpc-status-mapping.md
  * @export
  * @param {HttpStatusCode} code
  * @returns {*}  {GrpcStatusCode}
