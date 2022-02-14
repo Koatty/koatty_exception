@@ -1,26 +1,19 @@
-/**
- * @ author: richen
- * @ copyright: Copyright (c) - <richenlin(at)gmail.com>
- * @ license: BSD (3-Clause)
- * @ version: 2020-12-15 11:49:15
+/*
+ * @Description: 
+ * @Usage: 
+ * @Author: richen
+ * @Date: 2022-02-10 18:16:36
+ * @LastEditTime: 2022-02-11 10:36:34
  */
 
-import { KoattyContext, KoattyNext } from "koatty_core";
+import { KoattyContext } from "koatty_core";
 import { DefaultLogger as Logger } from "koatty_logger";
 import { HttpStatusCode, HttpStatusCodeMap } from "./code";
 
-
-/**
- * Predefined runtime exception
- *
- * @export
- * @class HttpError
- * @extends {Error}
- */
-export class Exception extends Error {
+export class WsException extends Error {
     public status: number;
     public code: number;
-    readonly type = "Exception";
+    readonly type = "WsException";
 
     /**
      * Creates an instance of Exception.
@@ -38,7 +31,7 @@ export class Exception extends Error {
     /**
      * Exception handler
      *
-     * @param {KoattyContext} ctx
+     * @protected
      * @returns {*}  
      * @memberof Exception
      */
@@ -65,18 +58,11 @@ export class Exception extends Error {
  *
  *
  * @param {KoattyContext} ctx
- * @param {Exception} err
+ * @param {WsException} err
  * @returns {*}  
  */
-function responseBody(ctx: KoattyContext, err: Exception) {
-    let contentType = 'application/json';
-    if (ctx.encoding !== false) {
-        contentType = `${contentType}; charset=${ctx.encoding}`;
-    }
-    ctx.type = contentType;
-    const { code, message } = err;
-    const body = `{"code":${code || 1},"message":"${message ?? ""}"}`;
-    ctx.set("Content-Length", `${Buffer.byteLength(body)}`);
-    return ctx.res.end(body);
+function responseBody(ctx: KoattyContext, err: WsException): any {
+    ctx.status = err.status ?? (ctx.status || 500);
+    ctx.websocket.emit('error');
+    return null;
 }
-
