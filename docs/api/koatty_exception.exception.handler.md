@@ -9,7 +9,7 @@ Exception handler
 <b>Signature:</b>
 
 ```typescript
-handler(ctx: KoattyContext): Promise<import("http").ServerResponse>;
+handler(ctx: KoattyContext): Promise<any>;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ handler(ctx: KoattyContext): Promise<import("http").ServerResponse>;
 
 <b>Returns:</b>
 
-Promise&lt;import("http").ServerResponse&gt;
+Promise&lt;any&gt;
 
 {<!-- -->\*<!-- -->}  Exception
 

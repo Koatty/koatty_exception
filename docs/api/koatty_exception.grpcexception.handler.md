@@ -10,7 +10,7 @@ Exception handler
 <b>Signature:</b>
 
 ```typescript
-handler(ctx: KoattyContext): Promise<void>;
+handler(ctx: KoattyContext): Promise<any>;
 ```
 
 ## Parameters
@@ -21,7 +21,7 @@ handler(ctx: KoattyContext): Promise<void>;
 
 <b>Returns:</b>
 
-Promise&lt;void&gt;
+Promise&lt;any&gt;
 
 {<!-- -->\*<!-- -->}  Exception
 
