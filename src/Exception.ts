@@ -42,7 +42,7 @@ export class Exception extends Error {
      * @returns {*}  
      * @memberof Exception
      */
-    async handler(ctx: KoattyContext) {
+    async handler(ctx: KoattyContext): Promise<any> {
         try {
             let body: any = ctx.body;
             if (!body) {

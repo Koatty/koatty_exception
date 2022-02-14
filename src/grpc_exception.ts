@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:39:54
- * @LastEditTime: 2022-02-11 10:36:27
+ * @LastEditTime: 2022-02-14 11:36:18
  */
 
 import { KoattyContext } from "koatty_core";
@@ -36,7 +36,7 @@ export class GrpcException extends Error {
      * @returns {*}  
      * @memberof Exception
      */
-    async handler(ctx: KoattyContext) {
+    async handler(ctx: KoattyContext): Promise<any> {
         let errObj;
         try {
             // http status convert to grpc status

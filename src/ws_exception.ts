@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 18:16:36
- * @LastEditTime: 2022-02-11 10:36:34
+ * @LastEditTime: 2022-02-14 11:36:26
  */
 
 import { KoattyContext } from "koatty_core";
@@ -35,7 +35,7 @@ export class WsException extends Error {
      * @returns {*}  
      * @memberof Exception
      */
-    async handler(ctx: KoattyContext) {
+    async handler(ctx: KoattyContext): Promise<any> {
         try {
             let body: any = ctx.body;
             if (!body) {

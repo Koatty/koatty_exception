@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-01-25 10:32:15
- * @LastEditTime: 2022-02-11 10:21:06
+ * @LastEditTime: 2022-02-14 11:43:23
  */
 
 import { IOCContainer } from "koatty_container";
@@ -12,9 +12,14 @@ import { Exception } from "./exception";
 /**
  * Indicates that an decorated class is a "ExceptionHandler".
  * @ExceptionHandler()
+ * 
  * export class BusinessException extends Exception { 
- *  constructor(message: string, code: number, status: number) {  }
- *  handler(ctx: KoattyContext) { ... }
+ *    constructor(message: string, code: number, status: number) { ... }
+ *    handler(ctx: KoattyContext) { 
+ * 
+ *      ...//Handling business exceptions 
+ * 
+ *    }
  * }
  *
  * @export
