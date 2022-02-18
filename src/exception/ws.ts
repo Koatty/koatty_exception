@@ -3,12 +3,12 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 18:16:36
- * @LastEditTime: 2022-02-14 11:36:26
+ * @LastEditTime: 2022-02-19 00:50:17
  */
 
 import { KoattyContext } from "koatty_core";
 import { DefaultLogger as Logger } from "koatty_logger";
-import { HttpStatusCode, HttpStatusCodeMap } from "./code";
+import { HttpStatusCode, HttpStatusCodeMap } from "../code";
 
 export class WsException extends Error {
     public status: number;

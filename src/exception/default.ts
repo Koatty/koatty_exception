@@ -7,7 +7,7 @@
 
 import { KoattyContext, KoattyNext } from "koatty_core";
 import { DefaultLogger as Logger } from "koatty_logger";
-import { HttpStatusCode, HttpStatusCodeMap } from "./code";
+import { HttpStatusCode, HttpStatusCodeMap } from "../code";
 
 
 /**

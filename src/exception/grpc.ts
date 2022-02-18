@@ -3,11 +3,11 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:39:54
- * @LastEditTime: 2022-02-14 11:36:18
+ * @LastEditTime: 2022-02-19 00:50:08
  */
 
 import { KoattyContext } from "koatty_core";
-import { GrpcStatusCodeMap, HttpStatusCodeMap, StatusCodeConvert } from "./code";
+import { GrpcStatusCodeMap, HttpStatusCodeMap, StatusCodeConvert } from "../code";
 import { DefaultLogger as Logger } from "koatty_logger";
 import { StatusBuilder } from "@grpc/grpc-js";
 
