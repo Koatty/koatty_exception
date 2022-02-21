@@ -9,8 +9,6 @@
 |  Class | Description |
 |  --- | --- |
 |  [Exception](./koatty_exception.exception.md) | Predefined runtime exception  HttpError  {<!-- -->Error<!-- -->} |
-|  [GrpcException](./koatty_exception.grpcexception.md) |  |
-|  [WsException](./koatty_exception.wsexception.md) |  |
 
 ## Enumerations
 

@@ -3,10 +3,10 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:40:55
- * @LastEditTime: 2022-02-19 00:50:06
+ * @LastEditTime: 2022-02-21 10:51:28
  */
 import * as Helper from "koatty_lib";
-import { Exception } from "./exception/default";
+import { Exception } from "./exception";
 
 const PREVENT_NEXT_PROCESS = 'PREVENT_NEXT_PROCESS';
 /**

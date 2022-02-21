@@ -9,14 +9,14 @@ Exception handler
 <b>Signature:</b>
 
 ```typescript
-handler(ctx: KoattyContext): Promise<any>;
+handler(ctx: any): Promise<any>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  ctx | KoattyContext |  |
+|  ctx | any |  |
 
 <b>Returns:</b>
 

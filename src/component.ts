@@ -3,11 +3,11 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-01-25 10:32:15
- * @LastEditTime: 2022-02-19 00:50:10
+ * @LastEditTime: 2022-02-21 10:51:30
  */
 
 import { IOCContainer } from "koatty_container";
-import { Exception } from "./exception/default";
+import { Exception } from "./exception";
 
 /**
  * Indicates that an decorated class is a "ExceptionHandler".
