@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-19 15:42:47
- * @LastEditTime: 2022-02-21 15:31:08
+ * @LastEditTime: 2022-02-21 17:39:30
  */
 
 import { DefaultLogger as Logger } from "koatty_logger";
@@ -34,8 +34,9 @@ export function httpHandler(ctx: any, err: Exception) {
             contentType = `${contentType}; charset=${ctx.encoding}`;
         }
         ctx.type = contentType;
+        body = `{"code":${err.code || 1},"message":"${body ?? ""}"}`;
         ctx.set("Content-Length", `${Buffer.byteLength(body)}`);
-        return ctx.res.end(`{"code":${err.code || 1},"message":"${body ?? ""}"}`);
+        return ctx.res.end(body);
     } catch (error) {
         Logger.Error(error);
         return null;
