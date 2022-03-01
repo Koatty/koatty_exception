@@ -33,5 +33,5 @@ export declare class Exception extends Error
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [handler(ctx)](./koatty_exception.exception.handler.md) |  | Exception handler |
+|  [default(ctx)](./koatty_exception.exception.default.md) |  | Default exception handler |
 
