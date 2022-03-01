@@ -29,10 +29,10 @@ export class Exception extends Error {
      * @param {number} [status]
      * @memberof Exception
      */
-    constructor(message: string, code = 1, status?: number) {
+    constructor(message: string, code = 1, status = 0) {
         super(message);
-        this.status = status || 500;
-        this.code = code || 1;
+        this.status = status;
+        this.code = code;
     }
 
     /**
