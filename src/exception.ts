@@ -42,7 +42,7 @@ export class Exception extends Error {
      * @returns {*}  
      * @memberof Exception
      */
-    private async default(ctx: any): Promise<any> {
+    async default(ctx: any): Promise<any> {
         switch (ctx.protocol) {
             case "grpc":
                 return gRPCHandler(ctx, this);
