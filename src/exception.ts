@@ -36,13 +36,13 @@ export class Exception extends Error {
     }
 
     /**
-     * Exception handler
+     * Default exception handler
      *
      * @param {KoattyContext} ctx
      * @returns {*}  
      * @memberof Exception
      */
-    async handler(ctx: any): Promise<any> {
+    private async default(ctx: any): Promise<any> {
         switch (ctx.protocol) {
             case "grpc":
                 return gRPCHandler(ctx, this);
