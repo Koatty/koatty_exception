@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 18:16:36
- * @LastEditTime: 2022-02-21 15:31:18
+ * @LastEditTime: 2022-03-02 16:29:48
  */
 
 import { DefaultLogger as Logger } from "koatty_logger";
@@ -21,15 +21,12 @@ import { Exception } from "../exception";
  */
 export function wsHandler(ctx: any, err: Exception): void {
     try {
-        let body: any = ctx.body;
-        if (!body) {
-            body = err.message || ctx.message || "";
-        }
         ctx.status = ctx.status || 500;
         if (HttpStatusCodeMap.has(err.status)) {
             ctx.status = <HttpStatusCode>err.status;
         }
-        ctx.status = err.status ?? (ctx.status || 500);
+        const msg = err.message || ctx.message || "";
+        const body = `{"code":${err.code || 1},"message":"${msg}","data":${ctx.body ? JSON.stringify(ctx.body) : (ctx.body || null)}}`;
         ctx.websocket.send(body);
         return null;
     } catch (error) {

@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:39:54
- * @LastEditTime: 2022-02-21 15:30:58
+ * @LastEditTime: 2022-03-02 16:31:55
  */
 
 import { GrpcStatusCodeMap, HttpStatusCodeMap, StatusCodeConvert } from "../code";
@@ -21,15 +21,15 @@ import { Exception } from "../exception";
  */
 export function gRPCHandler(ctx: any, err: Exception): Promise<any> {
     try {
-        let errObj, body: any = ctx.body, code = err.code ?? 2;
+        let errObj, code = err.code ?? 2;
         // http status convert to grpc status
         const status = err.status || ctx.status;
         if (!err.code && HttpStatusCodeMap.has(status)) {
             code = StatusCodeConvert(status);
         }
-        body = body || err.message || GrpcStatusCodeMap.get(code) || "";
+        const body = ctx.body || err.message || GrpcStatusCodeMap.get(code) || null;
 
-        if (body !== "") {
+        if (body) {
             errObj = new StatusBuilder().withCode(code).withDetails(body).build();
         } else {
             errObj = new StatusBuilder().withCode(code).build();
