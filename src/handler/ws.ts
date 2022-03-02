@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 18:16:36
- * @LastEditTime: 2022-03-02 16:29:48
+ * @LastEditTime: 2022-03-02 18:38:03
  */
 
 import { DefaultLogger as Logger } from "koatty_logger";
@@ -27,8 +27,7 @@ export function wsHandler(ctx: any, err: Exception): void {
         }
         const msg = err.message || ctx.message || "";
         const body = `{"code":${err.code || 1},"message":"${msg}","data":${ctx.body ? JSON.stringify(ctx.body) : (ctx.body || null)}}`;
-        ctx.websocket.send(body);
-        return null;
+        return ctx.websocket.send(body);
     } catch (error) {
         Logger.Error(error);
         return null;

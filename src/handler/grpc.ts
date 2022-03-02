@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:39:54
- * @LastEditTime: 2022-03-02 16:31:55
+ * @LastEditTime: 2022-03-02 18:38:18
  */
 
 import { GrpcStatusCodeMap, HttpStatusCodeMap, StatusCodeConvert } from "../code";
@@ -34,8 +34,7 @@ export function gRPCHandler(ctx: any, err: Exception): Promise<any> {
         } else {
             errObj = new StatusBuilder().withCode(code).build();
         }
-        ctx.rpc.callback(errObj, null);
-        return;
+        return ctx.rpc.callback(errObj, null);
     } catch (error) {
         Logger.Error(error);
         ctx.rpc.callback(new StatusBuilder().withCode(2).build(), null);
