@@ -17,6 +17,6 @@ constructor(message: string, code?: number, status?: number);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  message | string |  |
-|  code | number |  |
-|  status | number |  Exception |
+|  code | number | <i>(Optional)</i> |
+|  status | number | <i>(Optional)</i>  Exception |
 

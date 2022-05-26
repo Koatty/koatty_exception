@@ -13,7 +13,6 @@ jest_html_reporters.html
 jest.config.js
 rollup.config.js
 tsconfig.json
-yarn.lock
 node_modules
 npm-debug.log
 coverage
@@ -24,3 +23,5 @@ demo
 logs
 scripts
 docs
+jest_html_reporters.html
+jest-html-reporters-attach
