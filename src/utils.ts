@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:40:55
- * @LastEditTime: 2022-02-21 10:51:28
+ * @LastEditTime: 2023-01-13 10:02:29
  */
 import * as Helper from "koatty_lib";
 import { Exception } from "./exception";
@@ -15,7 +15,7 @@ const PREVENT_NEXT_PROCESS = 'PREVENT_NEXT_PROCESS';
  * @returns {Promise.reject}
  */
 export function prevent(): Promise<never> {
-    return Promise.reject(new Error(PREVENT_NEXT_PROCESS));
+  return Promise.reject(new Error(PREVENT_NEXT_PROCESS));
 }
 
 /**
@@ -25,7 +25,7 @@ export function prevent(): Promise<never> {
  * @returns {boolean}
  */
 export function isPrevent(err: Error): boolean {
-    return Helper.isError(err) && err.message === PREVENT_NEXT_PROCESS;
+  return Helper.isError(err) && err.message === PREVENT_NEXT_PROCESS;
 }
 
 /**
@@ -36,8 +36,8 @@ export function isPrevent(err: Error): boolean {
  * @returns {boolean}  {err is Exception}
  */
 export const isException = <T extends { message: string, code?: number, status?: unknown }>(
-    err: Exception | T,
+  err: Exception | T,
 ): boolean =>
-    err instanceof Exception ||
-    !!(err && Object.hasOwnProperty.call(err, "handler") && Object.hasOwnProperty.call(err, "code"));
+  err instanceof Exception ||
+  !!(err && Object.hasOwnProperty.call(err, "handler") && Object.hasOwnProperty.call(err, "code"));
 

@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-01-25 10:32:15
- * @LastEditTime: 2022-02-21 10:51:30
+ * @LastEditTime: 2023-01-13 10:02:16
  */
 
 import { IOCContainer } from "koatty_container";
@@ -27,20 +27,20 @@ import { Exception } from "./exception";
  * @returns {ClassDecorator}
  */
 export function ExceptionHandler(): ClassDecorator {
-    return (target: any) => {
-        const identifier = IOCContainer.getIdentifier(target);
-        // if (identifier === "Exception") {
-        //     throw new Error("class name cannot be `Exception`");
-        // }
-        // if (!identifier.endsWith("Exception")) {
-        //     throw Error("class name must end with 'Exception'");
-        // }
-        // if (!target.prototype.type) {
-        //     throw new Error("class's property 'type' must be set");
-        // }
-        if (!(target.prototype instanceof Exception)) {
-            throw new Error(`class ${identifier} does not inherit from class 'Exception'`);
-        }
-        IOCContainer.saveClass("COMPONENT", target, "ExceptionHandler");
-    };
+  return (target: any) => {
+    const identifier = IOCContainer.getIdentifier(target);
+    // if (identifier === "Exception") {
+    //     throw new Error("class name cannot be `Exception`");
+    // }
+    // if (!identifier.endsWith("Exception")) {
+    //     throw Error("class name must end with 'Exception'");
+    // }
+    // if (!target.prototype.type) {
+    //     throw new Error("class's property 'type' must be set");
+    // }
+    if (!(target.prototype instanceof Exception)) {
+      throw new Error(`class ${identifier} does not inherit from class 'Exception'`);
+    }
+    IOCContainer.saveClass("COMPONENT", target, "ExceptionHandler");
+  };
 }
