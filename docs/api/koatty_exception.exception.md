@@ -8,12 +8,12 @@ Predefined runtime exception
 
   HttpError  {<!-- -->Error<!-- -->}
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class Exception extends Error 
 ```
-<b>Extends:</b> Error
+**Extends:** Error
 
 ## Constructors
 
@@ -27,7 +27,7 @@ export declare class Exception extends Error
 |  --- | --- | --- | --- |
 |  [code](./koatty_exception.exception.code.md) |  | number |  |
 |  [status](./koatty_exception.exception.status.md) |  | number |  |
-|  [type](./koatty_exception.exception.type.md) |  | (not declared) |  |
+|  [type](./koatty_exception.exception.type.md) | <code>readonly</code> | (not declared) |  |
 
 ## Methods
 

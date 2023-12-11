@@ -4,7 +4,7 @@
 
 ## Exception.type property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly type = "Exception";

@@ -4,21 +4,19 @@
 
 ## ExceptionHandler() function
 
-Indicates that an decorated class is a "ExceptionHandler". @<!-- -->ExceptionHandler()
-
-export class BusinessException extends Exception { constructor(message: string, code: number, status: number) { ... } handler(ctx: KoattyContext) {
+Indicates that an decorated class is a "ExceptionHandler". @<!-- -->ExceptionHandler() export class BusinessException extends Exception { constructor(message: string, code: number, status: number) { ... } handler(ctx: KoattyContext) {
 
 ...//Handling business exceptions
 
 } }
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function ExceptionHandler(): ClassDecorator;
 ```
-<b>Returns:</b>
+**Returns:**
 
 ClassDecorator
 

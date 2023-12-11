@@ -6,7 +6,7 @@
 
 HttpStatusCodeMap
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 HttpStatusCodeMap: Map<number, string>

@@ -6,7 +6,7 @@
 
 Check is prevent error
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function isPrevent(err: Error): boolean;
@@ -18,7 +18,7 @@ export declare function isPrevent(err: Error): boolean;
 |  --- | --- | --- |
 |  err | Error |  |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

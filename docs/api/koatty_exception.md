@@ -8,20 +8,20 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [Exception](./koatty_exception.exception.md) | Predefined runtime exception  HttpError  {<!-- -->Error<!-- -->} |
+|  [Exception](./koatty_exception.exception.md) | <p>Predefined runtime exception</p><p>  HttpError  {<!-- -->Error<!-- -->}</p> |
 
 ## Enumerations
 
 |  Enumeration | Description |
 |  --- | --- |
-|  [GrpcStatusCode](./koatty_exception.grpcstatuscode.md) | GrpcStatusCode  {<!-- -->number<!-- -->} |
-|  [HttpStatusCode](./koatty_exception.httpstatuscode.md) | HttpStatusCode  {<!-- -->number<!-- -->} |
+|  [GrpcStatusCode](./koatty_exception.grpcstatuscode.md) | <p>GrpcStatusCode</p><p>  {<!-- -->number<!-- -->}</p> |
+|  [HttpStatusCode](./koatty_exception.httpstatuscode.md) | <p>HttpStatusCode</p><p>  {<!-- -->number<!-- -->}</p> |
 
 ## Functions
 
 |  Function | Description |
 |  --- | --- |
-|  [ExceptionHandler()](./koatty_exception.exceptionhandler.md) | Indicates that an decorated class is a "ExceptionHandler". @<!-- -->ExceptionHandler()<!-- -->export class BusinessException extends Exception { constructor(message: string, code: number, status: number) { ... } handler(ctx: KoattyContext) {<!-- -->...//Handling business exceptions<!-- -->} } |
+|  [ExceptionHandler()](./koatty_exception.exceptionhandler.md) | <p>Indicates that an decorated class is a "ExceptionHandler". @<!-- -->ExceptionHandler() export class BusinessException extends Exception { constructor(message: string, code: number, status: number) { ... } handler(ctx: KoattyContext) {</p><p>...//Handling business exceptions</p><p>} }</p> |
 |  [isPrevent(err)](./koatty_exception.isprevent.md) | Check is prevent error |
 |  [prevent()](./koatty_exception.prevent.md) | Prevent next process |
 |  [StatusCodeConvert(code)](./koatty_exception.statuscodeconvert.md) | Convert HttpStatusCode to GrpcStatusCode https://chromium.googlesource.com/external/github.com/grpc/grpc/+/refs/heads/chromium-deps/2016-10-25/doc/http-grpc-status-mapping.md  |
@@ -32,5 +32,5 @@
 |  --- | --- |
 |  [GrpcStatusCodeMap](./koatty_exception.grpcstatuscodemap.md) | GrpcStatusCodeMap |
 |  [HttpStatusCodeMap](./koatty_exception.httpstatuscodemap.md) | HttpStatusCodeMap |
-|  [isException](./koatty_exception.isexception.md) | Check if the error is a predefined exception T |
+|  [isException](./koatty_exception.isexception.md) | <p>Check if the error is a predefined exception</p><p> T</p> |
 

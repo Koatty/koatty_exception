@@ -6,7 +6,7 @@
 
 Creates an instance of Exception.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(message: string, code?: number, status?: number);
@@ -17,6 +17,6 @@ constructor(message: string, code?: number, status?: number);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  message | string |  |
-|  code | number | <i>(Optional)</i> |
-|  status | number | <i>(Optional)</i>  Exception |
+|  code | number | _(Optional)_ |
+|  status | number | _(Optional)_  Exception |
 

@@ -6,12 +6,12 @@
 
 Prevent next process
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function prevent(): Promise<never>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;never&gt;
 

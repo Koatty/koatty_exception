@@ -6,7 +6,7 @@
 
 Default exception handler
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 default(ctx: any): Promise<any>;
@@ -18,7 +18,7 @@ default(ctx: any): Promise<any>;
 |  --- | --- | --- |
 |  ctx | any |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;any&gt;
 

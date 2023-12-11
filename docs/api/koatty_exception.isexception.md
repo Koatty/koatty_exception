@@ -8,7 +8,7 @@ Check if the error is a predefined exception
 
  T
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isException: <T extends {

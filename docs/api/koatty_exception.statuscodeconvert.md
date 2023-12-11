@@ -6,7 +6,7 @@
 
 Convert HttpStatusCode to GrpcStatusCode https://chromium.googlesource.com/external/github.com/grpc/grpc/+/refs/heads/chromium-deps/2016-10-25/doc/http-grpc-status-mapping.md 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function StatusCodeConvert(code: HttpStatusCode): GrpcStatusCode;
@@ -18,7 +18,7 @@ export declare function StatusCodeConvert(code: HttpStatusCode): GrpcStatusCode;
 |  --- | --- | --- |
 |  code | [HttpStatusCode](./koatty_exception.httpstatuscode.md) |  |
 
-<b>Returns:</b>
+**Returns:**
 
 [GrpcStatusCode](./koatty_exception.grpcstatuscode.md)
 

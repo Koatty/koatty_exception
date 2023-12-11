@@ -6,7 +6,7 @@
 
 GrpcStatusCodeMap
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 GrpcStatusCodeMap: Map<number, string>
