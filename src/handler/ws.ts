@@ -3,12 +3,13 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 18:16:36
- * @LastEditTime: 2023-09-12 10:58:21
+ * @LastEditTime: 2024-01-21 12:05:44
  */
 
 import { DefaultLogger as Logger } from "koatty_logger";
 import { HttpStatusCode, HttpStatusCodeMap } from "../code";
 import { Exception } from "../exception";
+import { KoaContext } from "koatty_core";
 
 
 /**
@@ -19,7 +20,7 @@ import { Exception } from "../exception";
  * @param {Exception} err
  * @returns {*}  {void}
  */
-export function wsHandler(ctx: any, err: Exception): void {
+export function wsHandler(ctx: KoaContext, err: Exception) {
   try {
     ctx.status = ctx.status || 500;
     if (HttpStatusCodeMap.has(err.status)) {

@@ -9,6 +9,7 @@
 import { DefaultLogger as Logger } from "koatty_logger";
 import { HttpStatusCode, HttpStatusCodeMap } from "../code";
 import { Exception } from "../exception";
+import { KoaContext } from "koatty_core";
 
 /**
  * HTTP error handler
@@ -18,7 +19,7 @@ import { Exception } from "../exception";
  * @param {Exception} err
  * @returns {*}  
  */
-export function httpHandler(ctx: any, err: Exception) {
+export function httpHandler(ctx: KoaContext, err: Exception) {
   try {
     ctx.status = ctx.status || 500;
     if (HttpStatusCodeMap.has(err.status)) {
