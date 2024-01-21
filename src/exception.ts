@@ -42,6 +42,26 @@ export class Exception extends Error {
     this.span = span;
   }
 
+  setStatus(status: number) {
+    this.status = status;
+  }
+
+  setMessage(message: string) {
+    this.message = message;
+  }
+
+  setCode(code: number) {
+    this.code = code;
+  }
+
+  setStack(stack: string) {
+    this.stack = stack;
+  }
+
+  setSpan(span: Span) {
+    this.span = span;
+  }
+
   /**
    * Default exception handler
    * @param ctx 
