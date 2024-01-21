@@ -20,5 +20,5 @@ constructor(message: string, code?: number, status?: number, stack?: string, spa
 |  code | number | _(Optional)_ err code |
 |  status | number | _(Optional)_ http status |
 |  stack | string | _(Optional)_ err stack |
-|  span | Span | _(Optional)_ opentracing span  {<!-- -->\*<!-- -->} |
+|  span | Span | _(Optional)_ opentracing span  {<!-- -->Exception<!-- -->} |
 
