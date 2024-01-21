@@ -6,12 +6,11 @@
  */
 
 import { DefaultLogger as Logger } from "koatty_logger";
-import { gRPCHandler } from "./handler/grpc";
-import { httpHandler } from "./handler/http";
-import { wsHandler } from "./handler/ws";
 import { Span, Tags } from "opentracing";
 import { KoattyContext } from "koatty_core";
 import { Helper } from "koatty_lib";
+import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
+import { StatusBuilder } from "@grpc/grpc-js";
 
 /**
  * Predefined runtime exception
@@ -77,14 +76,21 @@ export class Exception extends Error {
     }
     return this;
   }
-
   /**
-   * Default exception handler
-   * @param ctx 
+   * @description: logger
+   * @param {KoattyContext} ctx
+   * @return {*}
    */
-  handler(ctx: KoattyContext): Promise<any> {
+  log(ctx: KoattyContext) {
+    const now = Date.now();
+    let message = `{"startTime":"${ctx.startTime}","duration":"${(now - ctx.startTime) || 0}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"`;
     // LOG
-    this.stack ? Logger.Error(this.stack) : Logger.Error(this.message);
+    if (this.stack) {
+      message = `${message},stack:"${this.stack}"`;
+    }
+    message = `${message}}`;
+
+    Logger.Error(message);
     // span
     if (this.span) {
       this.span.setTag(Tags.ERROR, true);
@@ -92,17 +98,58 @@ export class Exception extends Error {
       this.span.setTag(Tags.HTTP_METHOD, ctx.method);
       this.span.setTag(Tags.HTTP_URL, ctx.url);
       this.span.log({ 'event': 'error', 'message': this.message, 'stack': this.stack });
-      // this.span.finish();
     }
-    switch (ctx.protocol) {
-      case "grpc":
-        return gRPCHandler(ctx, this);
-      case "ws":
-      case "wss":
-        return wsHandler(ctx, this);
-      default:
-        return httpHandler(ctx, this);
+    return;
+  }
+
+  /**
+   * @description: Default exception handler
+   * @param {KoattyContext} ctx
+   * @return {*}
+   */
+  handler(ctx: KoattyContext): Promise<any> {
+    // LOG
+    this.log(ctx);
+    try {
+      ctx.status = this.status || ctx.status;
+      let contentType = 'application/json';
+      if (ctx.encoding !== false) {
+        contentType = `${contentType}; charset=${ctx.encoding}`;
+      }
+      ctx.type = contentType;
+      let body = JSON.stringify(ctx.body || "");
+
+      switch (ctx.protocol) {
+        case "ws":
+        case "wss":
+          if (ctx.websocket) {
+            body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
+            ctx.length = Buffer.byteLength(body);
+            ctx.websocket.send(body);
+          }
+          break;
+        case "grpc":
+          if (ctx.rpc && ctx.rpc.callback) {
+            // http status convert to grpc status
+            if (!this.code) {
+              this.code = StatusCodeConvert(ctx.status);
+            }
+            body = body || GrpcStatusCodeMap.get(this.code) || "";
+            ctx.length = Buffer.byteLength(body);
+            ctx.rpc.callback(new StatusBuilder().withCode(this.code).withDetails(body).build(), null);
+          }
+          break;
+        default:
+          body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
+          ctx.length = Buffer.byteLength(body);
+          ctx.res.end(body);
+          break;
+      }
+    } catch (error) {
+      Logger.Error(error);
     }
+
+    return null;
   }
 
 }
