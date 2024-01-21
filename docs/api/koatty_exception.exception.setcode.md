@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-setCode(code: number): void;
+setCode(code: number): this;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ setCode(code: number): void;
 
 **Returns:**
 
-void
+this
 

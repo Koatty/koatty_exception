@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-setMessage(message: string): void;
+setMessage(message: string): this;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ setMessage(message: string): void;
 
 **Returns:**
 
-void
+this
 

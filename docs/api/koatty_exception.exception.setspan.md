@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-setSpan(span: Span): void;
+setSpan(span: Span): this;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ setSpan(span: Span): void;
 
 **Returns:**
 
-void
+this
 

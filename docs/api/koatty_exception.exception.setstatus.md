@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-setStatus(status: number): void;
+setStatus(status: number): this;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ setStatus(status: number): void;
 
 **Returns:**
 
-void
+this
 

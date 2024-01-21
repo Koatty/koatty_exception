@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-setStack(stack: string): void;
+setStack(stack: string): this;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ setStack(stack: string): void;
 
 **Returns:**
 
-void
+this
 
