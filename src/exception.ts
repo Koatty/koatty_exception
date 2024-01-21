@@ -11,6 +11,7 @@ import { httpHandler } from "./handler/http";
 import { wsHandler } from "./handler/ws";
 import { Span, Tags } from "opentracing";
 import { KoattyContext } from "koatty_core";
+import { Helper } from "koatty_lib";
 
 /**
  * Predefined runtime exception
@@ -43,23 +44,38 @@ export class Exception extends Error {
   }
 
   setStatus(status: number) {
-    this.status = status;
+    if (status >= 100 && status < 600) {
+      this.status = status;
+    }
+    return this;
   }
 
   setMessage(message: string) {
-    this.message = message;
+    if (message) {
+      this.message = message;
+    }
+    return this;
   }
 
   setCode(code: number) {
-    this.code = code;
+    if (Helper.isNumber(code)) {
+      this.code = code;
+    }
+    return this;
   }
 
   setStack(stack: string) {
-    this.stack = stack;
+    if (stack) {
+      this.stack = stack;
+    }
+    return this;
   }
 
   setSpan(span: Span) {
-    this.span = span;
+    if (span) {
+      this.span = span;
+    }
+    return this;
   }
 
   /**
