@@ -92,7 +92,7 @@ export class Exception extends Error {
       this.span.setTag(Tags.HTTP_METHOD, ctx.method);
       this.span.setTag(Tags.HTTP_URL, ctx.url);
       this.span.log({ 'event': 'error', 'message': this.message, 'stack': this.stack });
-      this.span.finish();
+      // this.span.finish();
     }
     switch (ctx.protocol) {
       case "grpc":
