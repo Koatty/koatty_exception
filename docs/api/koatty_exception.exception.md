@@ -34,7 +34,8 @@ export declare class Exception extends Error
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [handler(ctx)](./koatty_exception.exception.handler.md) |  | Default exception handler |
+|  [handler(ctx)](./koatty_exception.exception.handler.md) |  | @<!-- -->description: Default exception handler |
+|  [log(ctx)](./koatty_exception.exception.log.md) |  | @<!-- -->description: logger |
 |  [setCode(code)](./koatty_exception.exception.setcode.md) |  |  |
 |  [setMessage(message)](./koatty_exception.exception.setmessage.md) |  |  |
 |  [setSpan(span)](./koatty_exception.exception.setspan.md) |  |  |

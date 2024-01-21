@@ -4,7 +4,7 @@
 
 ## Exception.handler() method
 
-Default exception handler
+@<!-- -->description: Default exception handler
 
 **Signature:**
 
@@ -16,7 +16,7 @@ handler(ctx: KoattyContext): Promise<any>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  ctx | KoattyContext |  |
+|  ctx | KoattyContext |  {<!-- -->\*<!-- -->} |
 
 **Returns:**
 
