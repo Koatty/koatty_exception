@@ -4,19 +4,21 @@
 
 ## Exception.(constructor)
 
-Creates an instance of Exception.
+@<!-- -->description: Creates an instance of Exception.
 
 **Signature:**
 
 ```typescript
-constructor(message: string, code?: number, status?: number);
+constructor(message: string, code?: number, status?: number, stack?: string, span?: Span);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  message | string |  |
-|  code | number | _(Optional)_ |
-|  status | number | _(Optional)_  Exception |
+|  message | string | err message |
+|  code | number | _(Optional)_ err code |
+|  status | number | _(Optional)_ http status |
+|  stack | string | _(Optional)_ err stack |
+|  span | Span | _(Optional)_ opentracing span  {<!-- -->\*<!-- -->} |
 

@@ -19,13 +19,14 @@ export declare class Exception extends Error
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(message, code, status)](./koatty_exception.exception._constructor_.md) |  | Creates an instance of Exception. |
+|  [(constructor)(message, code, status, stack, span)](./koatty_exception.exception._constructor_.md) |  | @<!-- -->description: Creates an instance of Exception. |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [code](./koatty_exception.exception.code.md) |  | number |  |
+|  [span](./koatty_exception.exception.span.md) |  | Span |  |
 |  [status](./koatty_exception.exception.status.md) |  | number |  |
 |  [type](./koatty_exception.exception.type.md) | <code>readonly</code> | (not declared) |  |
 
@@ -33,5 +34,5 @@ export declare class Exception extends Error
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [default(ctx)](./koatty_exception.exception.default.md) |  | Default exception handler |
+|  [handler(ctx)](./koatty_exception.exception.handler.md) |  | Default exception handler |
 
