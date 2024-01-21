@@ -21,21 +21,21 @@ import { Helper } from "koatty_lib";
  * @extends {Error}
  */
 export class Exception extends Error {
-  public status: number;
-  public code: number;
+  public status: number = 500;
+  public code: number = 1;
   public span: Span;
   readonly type = "Exception";
 
   /**
    * @description: Creates an instance of Exception.
    * @param {string} message err message
-   * @param {*} code err code
-   * @param {*} status http status
+   * @param {number} code err code
+   * @param {number} status http status
    * @param {string} stack err stack
    * @param {Span} span opentracing span
-   * @return {*}
+   * @return {Exception}
    */
-  constructor(message: string, code = 1, status = 0, stack?: string, span?: Span) {
+  constructor(message: string, code?: number, status?: number, stack?: string, span?: Span) {
     super(message);
     this.status = status;
     this.code = code;
