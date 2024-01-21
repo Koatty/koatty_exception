@@ -35,4 +35,9 @@ export declare class Exception extends Error
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [handler(ctx)](./koatty_exception.exception.handler.md) |  | Default exception handler |
+|  [setCode(code)](./koatty_exception.exception.setcode.md) |  |  |
+|  [setMessage(message)](./koatty_exception.exception.setmessage.md) |  |  |
+|  [setSpan(span)](./koatty_exception.exception.setspan.md) |  |  |
+|  [setStack(stack)](./koatty_exception.exception.setstack.md) |  |  |
+|  [setStatus(status)](./koatty_exception.exception.setstatus.md) |  |  |
 
