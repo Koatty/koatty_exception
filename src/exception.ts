@@ -9,8 +9,43 @@ import { DefaultLogger as Logger } from "koatty_logger";
 import { Span, Tags } from "opentracing";
 import { KoattyContext } from "koatty_core";
 import { Helper } from "koatty_lib";
-import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
-import { StatusBuilder } from "@grpc/grpc-js";
+import { ExceptionOutPut } from "./output";
+import { IOCContainer } from "koatty_container";
+
+/**
+ * Indicates that an decorated class is a "ExceptionHandler".
+ * @ExceptionHandler()
+ * export class BusinessException extends Exception { 
+ *    constructor(message: string, code: number, status: number) { ... }
+ *    handler(ctx: KoattyContext) { 
+ * 
+ *      ...//Handling business exceptions 
+ * 
+ *    }
+ * }
+ *
+ * @export
+ * @param {string} [identifier] class name
+ * @returns {ClassDecorator}
+ */
+export function ExceptionHandler(): ClassDecorator {
+  return (target: any) => {
+    const identifier = IOCContainer.getIdentifier(target);
+    // if (identifier === "Exception") {
+    //     throw new Error("class name cannot be `Exception`");
+    // }
+    // if (!identifier.endsWith("Exception")) {
+    //     throw Error("class name must end with 'Exception'");
+    // }
+    // if (!target.prototype.type) {
+    //     throw new Error("class's property 'type' must be set");
+    // }
+    if (!(target.prototype instanceof Exception)) {
+      throw new Error(`class ${identifier} does not inherit from class 'Exception'`);
+    }
+    IOCContainer.saveClass("COMPONENT", target, "ExceptionHandler");
+  };
+}
 
 /**
  * Predefined runtime exception
@@ -117,39 +152,11 @@ export class Exception extends Error {
         contentType = `${contentType}; charset=${ctx.encoding}`;
       }
       ctx.type = contentType;
-      let body = JSON.stringify(ctx.body || "");
-
-      switch (ctx.protocol) {
-        case "ws":
-        case "wss":
-          if (ctx.websocket) {
-            body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
-            ctx.length = Buffer.byteLength(body);
-            ctx.websocket.send(body);
-          }
-          break;
-        case "grpc":
-          if (ctx.rpc && ctx.rpc.callback) {
-            // http status convert to grpc status
-            if (!this.code) {
-              this.code = StatusCodeConvert(ctx.status);
-            }
-            body = body || GrpcStatusCodeMap.get(this.code) || "";
-            ctx.length = Buffer.byteLength(body);
-            ctx.rpc.callback(new StatusBuilder().withCode(this.code).withDetails(body).build(), null);
-          }
-          break;
-        default:
-          body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
-          ctx.length = Buffer.byteLength(body);
-          ctx.res.end(body);
-          break;
-      }
+      const body = JSON.stringify(ctx.body || "");
+      return ExceptionOutPut(ctx, body);
     } catch (error) {
       Logger.Error(error);
     }
-
-    return null;
   }
 
 }
