@@ -22,6 +22,7 @@
 |  Function | Description |
 |  --- | --- |
 |  [ExceptionHandler()](./koatty_exception.exceptionhandler.md) | <p>Indicates that an decorated class is a "ExceptionHandler". @<!-- -->ExceptionHandler() export class BusinessException extends Exception { constructor(message: string, code: number, status: number) { ... } handler(ctx: KoattyContext) {</p><p>...//Handling business exceptions</p><p>} }</p> |
+|  [ExceptionOutPut(ctx, body)](./koatty_exception.exceptionoutput.md) | @<!-- -->description: exception output |
 |  [isPrevent(err)](./koatty_exception.isprevent.md) | Check is prevent error |
 |  [prevent()](./koatty_exception.prevent.md) | Prevent next process |
 |  [StatusCodeConvert(code)](./koatty_exception.statuscodeconvert.md) | Convert HttpStatusCode to GrpcStatusCode https://chromium.googlesource.com/external/github.com/grpc/grpc/+/refs/heads/chromium-deps/2016-10-25/doc/http-grpc-status-mapping.md  |
