@@ -119,28 +119,20 @@ export class Exception extends Error {
    */
   log(ctx: KoattyContext) {
     const now = Date.now();
-    const path = ctx.originalPath || '/';
-    const duration = (now - ctx.startTime) || 0;
-    Logger.Error(`{"startTime":"${ctx.startTime}","duration":"${duration}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${path}","message":"${this.message}","stack":"${this.stack}"`);
-    const message: any = {
-      "startTime": ctx.startTime,
-      "duration": duration,
-      "requestId": ctx.requestId,
-      "endTime": now,
-      "path": path,
-      "message": this.message,
-    }
-    // LOG
+    let message = `{"startTime":"${ctx.startTime}","duration":"${(now - ctx.startTime) || 0}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"`;
     if (this.stack) {
-      message['stack'] = this.stack;
+      message = `${message},stack:"${this.stack}"`;
     }
+    message = `${message}}`;
+
+    Logger.Error(message);
     // span
     if (this.span) {
       this.span.setTag(Tags.ERROR, true);
       this.span.setTag(Tags.HTTP_STATUS_CODE, ctx.status);
       this.span.setTag(Tags.HTTP_METHOD, ctx.method);
       this.span.setTag(Tags.HTTP_URL, ctx.url);
-      this.span.log(message);
+      this.span.log({ "error": message });
     }
     return;
   }
