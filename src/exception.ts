@@ -56,7 +56,7 @@ export function ExceptionHandler(): ClassDecorator {
  * @extends {Error}
  */
 export class Exception extends Error {
-  public status: number = 500;
+  public status: number;
   public code: number = 1;
   public span: Span;
   readonly type = "Exception";
@@ -130,7 +130,7 @@ export class Exception extends Error {
     // span
     if (this.span) {
       this.span.setTag(Tags.ERROR, true);
-      this.span.setTag(Tags.HTTP_STATUS_CODE, this.status || 500);
+      this.span.setTag(Tags.HTTP_STATUS_CODE, ctx.status);
       this.span.setTag(Tags.HTTP_METHOD, ctx.method);
       this.span.setTag(Tags.HTTP_URL, ctx.url);
       this.span.log({ "error": `{"requestId": "${ctx.requestId}", "message": ${this.message}, "stack": ${this.stack} }` });
@@ -144,10 +144,10 @@ export class Exception extends Error {
    * @return {*}
    */
   handler(ctx: KoattyContext): Promise<any> {
-    // LOG
-    this.log(ctx);
     try {
-      ctx.status = this.status || ctx.status;
+      ctx.status = this.status || ctx.status || 500;
+      // LOG
+      this.log(ctx);
       let contentType = 'application/json';
       if (ctx.encoding !== false) {
         contentType = `${contentType}; charset=${ctx.encoding}`;
