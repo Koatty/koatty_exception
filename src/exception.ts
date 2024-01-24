@@ -9,8 +9,9 @@ import { DefaultLogger as Logger } from "koatty_logger";
 import { Span, Tags } from "opentracing";
 import { KoattyContext } from "koatty_core";
 import { Helper } from "koatty_lib";
-import { ExceptionOutPut } from "./output";
 import { IOCContainer } from "koatty_container";
+import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
+import { StatusBuilder } from "@grpc/grpc-js";
 
 /**
  * Indicates that an decorated class is a "ExceptionHandler".
@@ -153,10 +154,45 @@ export class Exception extends Error {
       }
       ctx.type = contentType;
       const body = JSON.stringify(ctx.body || "");
-      return ExceptionOutPut(ctx, body);
+      return this.output(ctx, body);
     } catch (error) {
       Logger.Error(error);
     }
+  }
+
+  /**
+   * @description: 
+   * @param {KoattyContext} ctx
+   * @param {string} body
+   * @return {*}
+   */
+  output(ctx: KoattyContext, body: string): any {
+    switch (ctx.protocol) {
+      case "ws":
+      case "wss":
+        if (ctx.websocket) {
+          body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
+          ctx.length = Buffer.byteLength(body);
+          ctx.websocket.send(body);
+        }
+        break;
+      case "grpc":
+        if (ctx.rpc && ctx.rpc.callback) {
+          // http status convert to grpc status
+          if (!this.code) {
+            this.code = StatusCodeConvert(ctx.status);
+          }
+          body = body || GrpcStatusCodeMap.get(this.code) || "";
+          ctx.rpc.callback(new StatusBuilder().withCode(this.code).withDetails(body).build(), null);
+        }
+        break;
+      default:
+        body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
+        ctx.length = Buffer.byteLength(body);
+        ctx.res.end(body);
+        break;
+    }
+    return null;
   }
 
 }
