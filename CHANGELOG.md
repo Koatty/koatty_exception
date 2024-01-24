@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2-4](https://github.com/koatty/koatty_exception/compare/v1.3.2-3...v1.3.2-4) (2024-01-24)
+
+
+### Bug Fixes
+
+* status ([0161be3](https://github.com/koatty/koatty_exception/commit/0161be3e49cfea07d24b3340bfb7757d9aa57657))
+
 ### [1.3.2-3](https://github.com/koatty/koatty_exception/compare/v1.3.2-2...v1.3.2-3) (2024-01-24)
 
 
