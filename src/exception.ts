@@ -119,12 +119,18 @@ export class Exception extends Error {
    */
   log(ctx: KoattyContext) {
     const now = Date.now();
-    let message = `{"startTime":"${ctx.startTime}","duration":"${(now - ctx.startTime) || 0}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"`;
+    const message: any = {
+      "startTime": ctx.startTime,
+      "duration": (now - ctx.startTime) || 0,
+      "requestId": ctx.requestId,
+      "endTime": now,
+      "path": ctx.originalPath || '/',
+      "message": this.message,
+    }
     // LOG
     if (this.stack) {
-      message = `${message},stack:"${this.stack}"`;
+      message['stack'] = this.stack;
     }
-    message = `${message}}`;
 
     Logger.Error(message);
     // span
@@ -133,7 +139,7 @@ export class Exception extends Error {
       this.span.setTag(Tags.HTTP_STATUS_CODE, ctx.status);
       this.span.setTag(Tags.HTTP_METHOD, ctx.method);
       this.span.setTag(Tags.HTTP_URL, ctx.url);
-      this.span.log({ "error": `{"requestId": "${ctx.requestId}", "message": ${this.message}, "stack": ${this.stack} }` });
+      this.span.log(message);
     }
     return;
   }
