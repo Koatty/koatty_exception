@@ -133,7 +133,7 @@ export class Exception extends Error {
       this.span.setTag(Tags.HTTP_STATUS_CODE, this.status || 500);
       this.span.setTag(Tags.HTTP_METHOD, ctx.method);
       this.span.setTag(Tags.HTTP_URL, ctx.url);
-      this.span.log({ 'event': 'error', 'message': this.message, 'stack': this.stack });
+      this.span.log({ "error": `{"requestId": "${ctx.requestId}", "message": ${this.message}, "stack": ${this.stack} }` });
     }
     return;
   }
