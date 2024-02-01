@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2022-02-10 17:40:55
- * @LastEditTime: 2023-01-13 10:02:29
+ * @LastEditTime: 2024-02-01 10:48:46
  */
 import * as Helper from "koatty_lib";
 import { Exception } from "./exception";
@@ -35,9 +35,7 @@ export function isPrevent(err: Error): boolean {
  * @param {(Exception | T)} err
  * @returns {boolean}  {err is Exception}
  */
-export const isException = <T extends { message: string, code?: number, status?: unknown }>(
-  err: Exception | T,
-): boolean =>
+export const isException = (err: any): boolean =>
   err instanceof Exception ||
-  !!(err && Object.hasOwnProperty.call(err, "handler") && Object.hasOwnProperty.call(err, "code"));
+  !!(err && err.type === "Exception");
 
