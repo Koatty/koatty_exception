@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/koatty/koatty_exception/compare/v1.3.2-6...v1.3.2) (2024-02-02)
+
+
+### Bug Fixes
+
+* constructor ([59a92d0](https://github.com/koatty/koatty_exception/commit/59a92d0c8a429554e97859bdd5cadf6f72d346a4))
+* log ([d1a3808](https://github.com/koatty/koatty_exception/commit/d1a38080744f3d0d352a683f4f8ad69175ed7f62))
+* span log ([453f51e](https://github.com/koatty/koatty_exception/commit/453f51e343e06bf165c5b5beb3e3bb2cc8155894))
+* 去除status默认值 ([6ecc75c](https://github.com/koatty/koatty_exception/commit/6ecc75c907cf65053c0f1ce93071a3785968d144))
+
 ### [1.3.2-6](https://github.com/koatty/koatty_exception/compare/v1.3.2-5...v1.3.2-6) (2024-01-24)
 
 ### [1.3.2-5](https://github.com/koatty/koatty_exception/compare/v1.3.2-4...v1.3.2-5) (2024-01-24)
