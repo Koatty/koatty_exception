@@ -11,9 +11,5 @@ Check if the error is a predefined exception
 **Signature:**
 
 ```typescript
-isException: <T extends {
-    message: string;
-    code?: number;
-    status?: unknown;
-}>(err: Exception | T) => boolean
+isException: (err: any) => boolean
 ```
