@@ -5,11 +5,11 @@
  * @ version: 2020-12-15 11:49:15
  */
 
-import { DefaultLogger as Logger } from "koatty_logger";
+import { Helper } from "koatty_lib";
 import { Span, Tags } from "opentracing";
 import { KoattyContext } from "koatty_core";
-import { Helper } from "koatty_lib";
 import { IOCContainer } from "koatty_container";
+import { DefaultLogger as Logger } from "koatty_logger";
 import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
 import { StatusBuilder } from "@grpc/grpc-js";
 
@@ -56,7 +56,7 @@ export function ExceptionHandler(): ClassDecorator {
  * @extends {Error}
  */
 export class Exception extends Error {
-  public status: number = 500;
+  public status: number;
   public code: number = 1;
   public span: Span;
   readonly type = "Exception";
