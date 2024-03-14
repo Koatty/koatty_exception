@@ -9,15 +9,14 @@
 **Signature:**
 
 ```typescript
-output(ctx: KoattyContext, body: string): any;
+output(ctx: KoattyContext): any;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  ctx | KoattyContext |  |
-|  body | string |  {<!-- -->\*<!-- -->} |
+|  ctx | KoattyContext |  {<!-- -->\*<!-- -->} |
 
 **Returns:**
 

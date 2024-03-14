@@ -9,6 +9,7 @@
 |  Class | Description |
 |  --- | --- |
 |  [Exception](./koatty_exception.exception.md) | <p>Predefined runtime exception</p><p>  HttpError  {<!-- -->Error<!-- -->}</p> |
+|  [Output](./koatty_exception.output.md) |  |
 
 ## Enumerations
 
@@ -25,6 +26,13 @@
 |  [isPrevent(err)](./koatty_exception.isprevent.md) | Check is prevent error |
 |  [prevent()](./koatty_exception.prevent.md) | Prevent next process |
 |  [StatusCodeConvert(code)](./koatty_exception.statuscodeconvert.md) | Convert HttpStatusCode to GrpcStatusCode https://chromium.googlesource.com/external/github.com/grpc/grpc/+/refs/heads/chromium-deps/2016-10-25/doc/http-grpc-status-mapping.md  |
+
+## Interfaces
+
+|  Interface | Description |
+|  --- | --- |
+|  [CodeError](./koatty_exception.codeerror.md) | Interface for Api CodeError |
+|  [JsonResult](./koatty_exception.jsonresult.md) | Interface for Api output |
 
 ## Variables
 

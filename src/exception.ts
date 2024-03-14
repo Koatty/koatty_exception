@@ -12,6 +12,7 @@ import { IOCContainer } from "koatty_container";
 import { DefaultLogger as Logger } from "koatty_logger";
 import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
 import { StatusBuilder } from "@grpc/grpc-js";
+import { Output } from "./output";
 
 /**
  * Indicates that an decorated class is a "ExceptionHandler".
@@ -59,7 +60,6 @@ export class Exception extends Error {
   public status: number;
   public code: number = 1;
   public span: Span;
-  readonly type = "Exception";
 
   /**
    * @description: Creates an instance of Exception.
@@ -153,8 +153,7 @@ export class Exception extends Error {
         contentType = `${contentType}; charset=${ctx.encoding}`;
       }
       ctx.type = contentType;
-      const body = JSON.stringify(ctx.body || "");
-      return this.output(ctx, body);
+      return this.output(ctx);
     } catch (error) {
       Logger.Error(error);
     }
@@ -163,37 +162,25 @@ export class Exception extends Error {
   /**
    * @description: 
    * @param {KoattyContext} ctx
-   * @param {string} body
    * @return {*}
    */
-  output(ctx: KoattyContext, body: string): any {
-    switch (ctx.protocol) {
-      case "ws":
-      case "wss":
-        if (ctx.websocket) {
-          body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
-          ctx.length = Buffer.byteLength(body);
-          ctx.websocket.send(body);
-        }
-        break;
-      case "grpc":
-        if (ctx.rpc && ctx.rpc.callback) {
-          // http status convert to grpc status
-          if (!this.code) {
-            this.code = StatusCodeConvert(ctx.status);
-          }
-          body = body || GrpcStatusCodeMap.get(this.code) || "";
-          ctx.rpc.callback(new StatusBuilder().withCode(this.code).withDetails(body).build(), null);
-        }
-        break;
-      default:
-        body = `{"code": ${this.code}, "message": "${this.message}", "data": ${body}}`;
-        ctx.length = Buffer.byteLength(body);
-        ctx.res.end(body);
-        break;
+  output(ctx: KoattyContext): any {
+    if (ctx.protocol == 'grpc') {
+      // http status convert to grpc status
+      if (!this.code) {
+        this.code = StatusCodeConvert(ctx.status);
+      }
+      ctx.body = ctx.body || GrpcStatusCodeMap.get(this.code) || "";
+      const gBody = JSON.stringify(Output.fail(this.message || '', ctx.body || '', this.code));
+      return ctx.rpc.callback(new StatusBuilder().withCode(this.code).withDetails(gBody).build(), null);
     }
-    return null;
-  }
 
+    const body = JSON.stringify(Output.fail(this.message || '', ctx.body || '', this.code));
+    ctx.length = Buffer.byteLength(body);
+    if (ctx.protocol == 'ws' || ctx.protocol == 'wss') {
+      return ctx.websocket.send(body);
+    }
+    return ctx.res.end(body);
+  }
 }
 

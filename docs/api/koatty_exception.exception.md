@@ -28,7 +28,6 @@ export declare class Exception extends Error
 |  [code](./koatty_exception.exception.code.md) |  | number |  |
 |  [span](./koatty_exception.exception.span.md) |  | Span |  |
 |  [status](./koatty_exception.exception.status.md) |  | number |  |
-|  [type](./koatty_exception.exception.type.md) | <code>readonly</code> | (not declared) |  |
 
 ## Methods
 
@@ -36,7 +35,7 @@ export declare class Exception extends Error
 |  --- | --- | --- |
 |  [handler(ctx)](./koatty_exception.exception.handler.md) |  | @<!-- -->description: Default exception handler |
 |  [log(ctx)](./koatty_exception.exception.log.md) |  | @<!-- -->description: logger |
-|  [output(ctx, body)](./koatty_exception.exception.output.md) |  | @<!-- -->description: |
+|  [output(ctx)](./koatty_exception.exception.output.md) |  | @<!-- -->description: |
 |  [setCode(code)](./koatty_exception.exception.setcode.md) |  |  |
 |  [setMessage(message)](./koatty_exception.exception.setmessage.md) |  |  |
 |  [setSpan(span)](./koatty_exception.exception.setspan.md) |  |  |
