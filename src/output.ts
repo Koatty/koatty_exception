@@ -3,7 +3,7 @@
  * @Usage: 
  * @Author: richen
  * @Date: 2024-01-03 22:03:34
- * @LastEditTime: 2024-03-15 06:01:40
+ * @LastEditTime: 2024-03-15 06:16:52
  * @License: BSD (3-Clause)
  * @Copyright (c): <richenlin(at)gmail.com>
  */
@@ -34,7 +34,7 @@ export class Output {
    * Response to normalize json format content for success
    *
    * @param {KoattyContext} ctx  
-   * @param {(string | ApiInput)} msg   待处理的message消息
+   * @param {(string | JsonResult)} msg   待处理的message消息
    * @param {*} [data]    待处理的数据
    * @param {number} [code=200]    错误码，默认0
    * @returns {*}
@@ -60,7 +60,7 @@ export class Output {
    * Response to normalize json format content for fail
    *
    * @param {KoattyContext} ctx   
-   * @param {(string | ApiInput)} msg   
+   * @param {(Error | CodeError | string)} msg   
    * @param {*} [data]    
    * @param {number} [code=1]    
    * @returns {*}
