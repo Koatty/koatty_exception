@@ -56,7 +56,7 @@ export function ExceptionHandler(): ClassDecorator {
  * @extends {Error}
  */
 export class Exception extends Error {
-  public status: number;
+  public status: number = 500;
   public code: number = 1;
   public span: Span;
 
@@ -166,7 +166,7 @@ export class Exception extends Error {
   output(ctx: KoattyContext): any {
     if (ctx.protocol == 'grpc') {
       // http status convert to grpc status
-      if (!this.code) {
+      if (this.code < 2) {
         this.code = StatusCodeConvert(ctx.status);
       }
       const body = JSON.stringify(ctx.body || this.message || "");
