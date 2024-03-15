@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.2](https://github.com/koatty/koatty_exception/compare/v1.4.1...v1.4.2) (2024-03-15)
+
+
+### Bug Fixes
+
+* code非正常值导致grpc无输出 ([3bfabd1](https://github.com/koatty/koatty_exception/commit/3bfabd1a60dc6454b3dd7c3b05bc87d86806e81c))
+
 ### [1.4.1](https://github.com/koatty/koatty_exception/compare/v1.4.0...v1.4.1) (2024-03-15)
 
 
