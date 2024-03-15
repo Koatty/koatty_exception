@@ -169,7 +169,7 @@ export class Exception extends Error {
       if (!this.code) {
         this.code = StatusCodeConvert(ctx.status);
       }
-      const body = JSON.stringify(ctx.body || GrpcStatusCodeMap.get(this.code) || "");
+      const body = JSON.stringify(ctx.body || this.message || "");
       return ctx.rpc.callback({
         code: this.code,
         details: body
