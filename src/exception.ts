@@ -11,7 +11,6 @@ import { KoattyContext } from "koatty_core";
 import { IOCContainer } from "koatty_container";
 import { DefaultLogger as Logger } from "koatty_logger";
 import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
-import { StatusBuilder } from "@grpc/grpc-js";
 import { Output } from "./output";
 
 /**
@@ -170,9 +169,11 @@ export class Exception extends Error {
       if (!this.code) {
         this.code = StatusCodeConvert(ctx.status);
       }
-      ctx.body = ctx.body || GrpcStatusCodeMap.get(this.code) || "";
-      const gBody = JSON.stringify(Output.fail(this.message || '', ctx.body || '', this.code));
-      return ctx.rpc.callback(new StatusBuilder().withCode(this.code).withDetails(gBody).build(), null);
+      const body = JSON.stringify(ctx.body || GrpcStatusCodeMap.get(this.code) || "");
+      return ctx.rpc.callback({
+        code: this.code,
+        details: body
+      }, null);
     }
 
     const body = JSON.stringify(Output.fail(this.message || '', ctx.body || '', this.code));

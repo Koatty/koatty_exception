@@ -85,7 +85,7 @@ export class Output {
     }
     return {
       code: code,
-      message: "fail",
+      message: "",
       data: data
     }
   }
