@@ -5,12 +5,12 @@
  * @ version: 2020-12-15 11:49:15
  */
 
-import { Helper } from "koatty_lib";
-import { Span, Tags } from "opentracing";
-import { KoattyContext } from "koatty_core";
 import { IOCContainer } from "koatty_container";
+import { KoattyContext } from "koatty_core";
+import { Helper } from "koatty_lib";
 import { DefaultLogger as Logger } from "koatty_logger";
-import { GrpcStatusCodeMap, StatusCodeConvert } from "./code";
+import { Span, Tags } from "opentracing";
+import { StatusCodeConvert } from "./code";
 import { Output } from "./output";
 
 /**
@@ -73,9 +73,8 @@ export class Exception extends Error {
     super(message);
     this.setCode(code);
     this.setStatus(status);
-    this.setMessage(message);
-    this.setSpan(span);
     this.setStack(stack);
+    this.span = span;
   }
 
   setCode(code: number) {
@@ -119,11 +118,8 @@ export class Exception extends Error {
    */
   log(ctx: KoattyContext) {
     const now = Date.now();
-    let message = `{"startTime":"${ctx.startTime}","duration":"${(now - ctx.startTime) || 0}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"`;
-    if (this.stack) {
-      message = `${message},stack:"${this.stack}"`;
-    }
-    message = `${message}}`;
+    const stackMessage = this.stack ? `,stack:"${this.stack}"` : '';
+    const message = `{"startTime":"${ctx.startTime}","duration":"${now - ctx.startTime}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"${stackMessage}}`;
 
     Logger.Error(message);
     // span
@@ -134,7 +130,6 @@ export class Exception extends Error {
       this.span.setTag(Tags.HTTP_URL, ctx.url);
       this.span.log({ "error": message });
     }
-    return;
   }
 
   /**
@@ -142,16 +137,12 @@ export class Exception extends Error {
    * @param {KoattyContext} ctx
    * @return {*}
    */
-  handler(ctx: KoattyContext): Promise<any> {
+  async handler(ctx: KoattyContext): Promise<any> {
     try {
       ctx.status = this.status || ctx.status;
       // LOG
       this.log(ctx);
-      let contentType = 'application/json';
-      if (ctx.encoding !== false) {
-        contentType = `${contentType}; charset=${ctx.encoding}`;
-      }
-      ctx.type = contentType;
+      ctx.type = ctx.encoding !== false ? `application/json; charset=${ctx.encoding}` : 'application/json';
       return this.output(ctx);
     } catch (error) {
       Logger.Error(error);
@@ -164,23 +155,27 @@ export class Exception extends Error {
    * @return {*}
    */
   output(ctx: KoattyContext): any {
-    if (ctx.protocol == 'grpc') {
-      // http status convert to grpc status
+    const isGrpc = ctx.protocol === 'grpc';
+    const isWebSocket = ctx.protocol === 'ws' || ctx.protocol === 'wss';
+    const responseBody = this.message || "";
+
+    if (isGrpc) {
       if (this.code < 2) {
         this.code = StatusCodeConvert(ctx.status);
       }
-      const body = JSON.stringify(ctx.body || this.message || "");
       return ctx.rpc.callback({
         code: this.code,
-        details: body
+        details: JSON.stringify(ctx.body || responseBody)
       }, null);
     }
 
-    const body = JSON.stringify(Output.fail(this.message || '', ctx.body || '', this.code));
+    const body = JSON.stringify(Output.fail(responseBody, ctx.body || '', this.code));
     ctx.length = Buffer.byteLength(body);
-    if (ctx.protocol == 'ws' || ctx.protocol == 'wss') {
+
+    if (isWebSocket) {
       return ctx.websocket.send(body);
     }
+
     return ctx.res.end(body);
   }
 }
