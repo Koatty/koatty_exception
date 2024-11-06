@@ -111,12 +111,31 @@ export class Exception extends Error {
     }
     return this;
   }
+
+
+  /**
+   * @description: Default exception handler
+   * @param {KoattyContext} ctx
+   * @return {*}
+   */
+  async handler(ctx: KoattyContext): Promise<any> {
+    try {
+      ctx.status = this.status || ctx.status;
+      // LOG
+      this._log(ctx);
+      ctx.type = ctx.encoding !== false ? `application/json; charset=${ctx.encoding}` : 'application/json';
+      return this._output(ctx);
+    } catch (error) {
+      Logger.Error(error);
+    }
+  }
+
   /**
    * @description: logger
    * @param {KoattyContext} ctx
    * @return {*}
    */
-  log(ctx: KoattyContext) {
+  protected _log(ctx: KoattyContext) {
     const now = Date.now();
     const stackMessage = this.stack ? `,stack:"${this.stack}"` : '';
     const message = `{"startTime":"${ctx.startTime}","duration":"${now - ctx.startTime}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"${stackMessage}}`;
@@ -133,28 +152,11 @@ export class Exception extends Error {
   }
 
   /**
-   * @description: Default exception handler
-   * @param {KoattyContext} ctx
-   * @return {*}
-   */
-  async handler(ctx: KoattyContext): Promise<any> {
-    try {
-      ctx.status = this.status || ctx.status;
-      // LOG
-      this.log(ctx);
-      ctx.type = ctx.encoding !== false ? `application/json; charset=${ctx.encoding}` : 'application/json';
-      return this.output(ctx);
-    } catch (error) {
-      Logger.Error(error);
-    }
-  }
-
-  /**
    * @description: 
    * @param {KoattyContext} ctx
    * @return {*}
    */
-  output(ctx: KoattyContext): any {
+  protected _output(ctx: KoattyContext): any {
     const isGrpc = ctx.protocol === 'grpc';
     const isWebSocket = ctx.protocol === 'ws' || ctx.protocol === 'wss';
     const responseBody = this.message || "";
