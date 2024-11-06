@@ -1,6 +1,6 @@
 {
   "name": "koatty_exception",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Exception handler for koatty.",
   "scripts": {
     "build": "npm run build:js && npm run build:dts && npm run build:doc && npm run build:cp",
@@ -93,7 +93,7 @@
   },
   "dependencies": {
     "koatty_container": "^1.x.x",
-    "koatty_core": "^1.x.x",
+    "koatty_core": "^1.9.x",
     "koatty_lib": "^1.x.x",
     "koatty_logger": "^2.x.x",
     "opentracing": "^0.14.7"
