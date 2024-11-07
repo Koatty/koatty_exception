@@ -4,9 +4,3 @@
 
 ## API Reference
 
-## Packages
-
-|  Package | Description |
-|  --- | --- |
-|  [koatty\_exception](./koatty_exception.md) |  |
-
