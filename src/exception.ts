@@ -122,9 +122,9 @@ export class Exception extends Error {
     try {
       ctx.status = this.status || ctx.status;
       // LOG
-      this._log(ctx);
+      this.log(ctx);
       ctx.type = ctx.encoding !== false ? `application/json; charset=${ctx.encoding}` : 'application/json';
-      return this._output(ctx);
+      return this.output(ctx);
     } catch (error) {
       Logger.Error(error);
     }
@@ -135,7 +135,7 @@ export class Exception extends Error {
    * @param {KoattyContext} ctx
    * @return {*}
    */
-  protected _log(ctx: KoattyContext) {
+  protected log(ctx: KoattyContext) {
     const now = Date.now();
     const stackMessage = this.stack ? `,stack:"${this.stack}"` : '';
     const message = `{"startTime":"${ctx.startTime}","duration":"${now - ctx.startTime}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"${stackMessage}}`;
@@ -156,7 +156,7 @@ export class Exception extends Error {
    * @param {KoattyContext} ctx
    * @return {*}
    */
-  protected _output(ctx: KoattyContext): any {
+  protected output(ctx: KoattyContext): any {
     const isGrpc = ctx.protocol === 'grpc';
     const isWebSocket = ctx.protocol === 'ws' || ctx.protocol === 'wss';
     const responseBody = this.message || "";
