@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/koatty/koatty_exception/compare/v1.5.3...v1.6.0) (2025-03-20)
+
+
+### Features
+
+* update exception handling to use OpenTelemetry API ([705ec46](https://github.com/koatty/koatty_exception/commit/705ec467396f35f69f723eb7b7f8d42c1c1a8f46))
+
 ### [1.5.3](https://github.com/koatty/koatty_exception/compare/v1.5.2...v1.5.3) (2024-11-12)
 
 
