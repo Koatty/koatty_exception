@@ -9,9 +9,10 @@ import { IOCContainer } from "koatty_container";
 import { KoattyContext } from "koatty_core";
 import { Helper } from "koatty_lib";
 import { DefaultLogger as Logger } from "koatty_logger";
-import { Span, Tags } from "opentracing";
+import { Span, SpanStatusCode,  } from "@opentelemetry/api";
 import { StatusCodeConvert } from "./code";
 import { Output } from "./output";
+import { SemanticAttributes } from "@opentelemetry/semantic-conventions";
 
 /**
  * Indicates that an decorated class is a "ExceptionHandler".
@@ -143,12 +144,10 @@ export class Exception extends Error {
     Logger.Error(message);
     // span
     if (this.span) {
-      this.span.setTag(Tags.ERROR, true);
-      this.span.setTag(Tags.HTTP_STATUS_CODE, ctx.status);
-      this.span.setTag(Tags.HTTP_METHOD, ctx.method);
-      this.span.setTag(Tags.HTTP_URL, ctx.url);
-      this.span.log({ "error": message });
-    }
+      this.span.setStatus({ code: SpanStatusCode.ERROR, message: message });
+      this.span.setAttribute(SemanticAttributes.HTTP_STATUS_CODE, ctx.status);
+      this.span.setAttribute(SemanticAttributes.HTTP_METHOD, ctx.method);
+      this.span.setAttribute(SemanticAttributes.HTTP_URL, ctx.url);    }
   }
 
   /**
