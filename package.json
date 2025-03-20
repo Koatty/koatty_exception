@@ -93,11 +93,12 @@
     "typescript": "^5.x.x"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/semantic-conventions": "^1.30.0",
     "koatty_container": "^1.x.x",
     "koatty_core": "^1.x.x",
     "koatty_lib": "^1.x.x",
-    "koatty_logger": "^2.x.x",
-    "opentracing": "^0.14.7"
+    "koatty_logger": "^2.x.x"
   },
   "peerDependencies": {
     "koatty_container": "^1.x.x",
