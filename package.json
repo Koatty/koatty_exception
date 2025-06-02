@@ -67,7 +67,7 @@
     "@microsoft/api-extractor": "^7.x.x",
     "@rollup/plugin-commonjs": "^28.x.x",
     "@rollup/plugin-json": "^6.x.x",
-    "@rollup/plugin-node-resolve": "^15.x.x",
+    "@rollup/plugin-node-resolve": "^16.x.x",
     "@types/jest": "^29.x.x",
     "@types/koa": "^2.x.x",
     "@types/lodash": "^4.x.x",
@@ -94,7 +94,7 @@
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/semantic-conventions": "^1.30.0",
+    "@opentelemetry/semantic-conventions": "^1.34.0",
     "koatty_container": "^1.x.x",
     "koatty_core": "^1.x.x",
     "koatty_lib": "^1.x.x",
