@@ -137,7 +137,7 @@ export class Output {
     if (Helper.isError(err)) {
       return {
         code: code,
-        message: err.message || 'Unknown error',
+        message: (<any>err).message || 'Unknown error',
         data: data as T
       };
     }

@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/koatty/koatty_exception/compare/v1.6.0...v1.8.0) (2025-06-02)
+
+
+### Features
+
+* add common error codes and enhance exception handling system ([571735a](https://github.com/koatty/koatty_exception/commit/571735a995bd6a93a90ac52694dc3b11a0c17e9f))
+* update dependency versions and enhance exception handling documentation ([e30bfcc](https://github.com/koatty/koatty_exception/commit/e30bfcc1fdf2caf6b4366698734354f833ace88c))
+
+## [1.7.0](https://github.com/koatty/koatty_exception/compare/v1.6.0...v1.7.0) (2025-06-02)
+
+
+### Features
+
+* add common error codes and enhance exception handling system ([571735a](https://github.com/koatty/koatty_exception/commit/571735a995bd6a93a90ac52694dc3b11a0c17e9f))
+* update dependency versions and enhance exception handling documentation ([e30bfcc](https://github.com/koatty/koatty_exception/commit/e30bfcc1fdf2caf6b4366698734354f833ace88c))
+
 ## [1.6.0](https://github.com/koatty/koatty_exception/compare/v1.5.3...v1.6.0) (2025-03-20)
 
 
