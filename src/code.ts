@@ -549,3 +549,21 @@ export function StatusCodeConvert(code: HttpStatusCode): GrpcStatusCode {
       return 2; //GrpcStatusCode.UNKNOWN;
   }
 } 
+
+/**
+ * Common error codes enum
+ */
+export enum CommonErrorCode {
+  SUCCESS = 0,
+  GENERAL_ERROR = 1,
+  VALIDATION_ERROR = 1001,
+  AUTHENTICATION_ERROR = 1002,
+  AUTHORIZATION_ERROR = 1003,
+  RESOURCE_NOT_FOUND = 1004,
+  RESOURCE_CONFLICT = 1005,
+  RATE_LIMIT_EXCEEDED = 1006,
+  INTERNAL_SERVER_ERROR = 1007,
+  SERVICE_UNAVAILABLE = 1008,
+  TIMEOUT_ERROR = 1009,
+  NETWORK_ERROR = 1010
+}

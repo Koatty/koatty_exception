@@ -15,6 +15,56 @@ import { Output } from "./output";
 import { SemanticAttributes } from "@opentelemetry/semantic-conventions";
 
 /**
+ * Exception configuration interface
+ */
+export interface ExceptionConfig {
+  enableStackTrace?: boolean;
+  logFormat?: 'json' | 'text';
+  customErrorFormat?: (error: Exception) => any;
+  maxStackLength?: number;
+}
+
+/**
+ * Error context interface
+ */
+export interface ErrorContext {
+  requestId: string;
+  path: string;
+  method: string;
+  userAgent?: string;
+  startTime: number;
+  endTime: number;
+  duration: number;
+  // 允许任意额外字段
+  [key: string]: any;
+}
+
+// 全局配置
+let globalConfig: ExceptionConfig = {
+  enableStackTrace: process.env.NODE_ENV !== 'production',
+  logFormat: 'json',
+  maxStackLength: 1000
+};
+
+/**
+ * Set global exception configuration
+ * 
+ * @param {Partial<ExceptionConfig>} config - Configuration options
+ */
+export function setExceptionConfig(config: Partial<ExceptionConfig>): void {
+  globalConfig = { ...globalConfig, ...config };
+}
+
+/**
+ * Get current exception configuration
+ * 
+ * @returns {ExceptionConfig} Current configuration
+ */
+export function getExceptionConfig(): ExceptionConfig {
+  return { ...globalConfig };
+}
+
+/**
  * Indicates that an decorated class is a "ExceptionHandler".
  * @ExceptionHandler()
  * export class BusinessException extends Exception { 
@@ -53,13 +103,16 @@ export function ExceptionHandler(): ClassDecorator {
  * Predefined runtime exception
  *
  * @export
- * @class HttpError
+ * @class Exception
  * @extends {Error}
  */
 export class Exception extends Error {
+  public readonly type: string = 'Exception';
   public status: number = 500;
   public code: number = 1;
-  public span: Span;
+  public span?: Span;
+  public timestamp: number;
+  public context?: Partial<ErrorContext>;
 
   /**
    * @description: Creates an instance of Exception.
@@ -72,93 +125,254 @@ export class Exception extends Error {
    */
   constructor(message: string, code?: number, status?: number, stack?: string, span?: Span) {
     super(message);
+    this.timestamp = Date.now();
     this.setCode(code);
     this.setStatus(status);
     this.setStack(stack);
     this.span = span;
+    
+    // 确保错误名称正确
+    this.name = this.constructor.name;
   }
 
-  setCode(code: number) {
-    if (Helper.isNumber(code)) {
-      this.code = code;
+  /**
+   * Set error code with validation
+   * 
+   * @param {number} code - Error code
+   * @returns {Exception} This instance for chaining
+   */
+  setCode(code?: number): this {
+    if (code !== undefined && Helper.isNumber(code) && code >= 0) {
+      this.code = Math.floor(code); // 确保是整数
     }
     return this;
   }
 
-  setStatus(status: number) {
-    if (status >= 100 && status < 600) {
-      this.status = status;
+  /**
+   * Set HTTP status with validation
+   * 
+   * @param {number} status - HTTP status code
+   * @returns {Exception} This instance for chaining
+   */
+  setStatus(status?: number): this {
+    if (status !== undefined && Helper.isNumber(status) && status >= 100 && status < 600) {
+      this.status = Math.floor(status); // 确保是整数
     }
     return this;
   }
 
-  setMessage(message: string) {
-    if (message) {
-      this.message = message;
+  /**
+   * Set error message with validation
+   * 
+   * @param {string} message - Error message
+   * @returns {Exception} This instance for chaining
+   */
+  setMessage(message: string): this {
+    if (message && typeof message === 'string') {
+      this.message = message.trim();
     }
     return this;
   }
 
-  setStack(stack: string) {
-    if (stack) {
-      this.stack = stack;
+  /**
+   * Set stack trace with validation
+   * 
+   * @param {string} stack - Stack trace
+   * @returns {Exception} This instance for chaining
+   */
+  setStack(stack?: string): this {
+    if (stack && typeof stack === 'string') {
+      const config = getExceptionConfig();
+      this.stack = config.maxStackLength && stack.length > config.maxStackLength 
+        ? stack.substring(0, config.maxStackLength) + '...[truncated]'
+        : stack;
     }
     return this;
   }
 
-  setSpan(span: Span) {
+  /**
+   * Set OpenTelemetry span
+   * 
+   * @param {Span} span - OpenTelemetry span
+   * @returns {Exception} This instance for chaining
+   */
+  setSpan(span: Span): this {
     if (span) {
       this.span = span;
     }
     return this;
   }
 
+  /**
+   * Set error context
+   * 
+   * @param {Partial<ErrorContext>} context - Error context
+   * @returns {Exception} This instance for chaining
+   */
+  setContext(context: Partial<ErrorContext>): this {
+    this.context = { ...this.context, ...context };
+    return this;
+  }
 
   /**
    * @description: Default exception handler
    * @param {KoattyContext} ctx
-   * @return {*}
+   * @return {Promise<any>}
    */
   async handler(ctx: KoattyContext): Promise<any> {
     try {
+      // 设置响应状态
       ctx.status = this.status || ctx.status;
-      // LOG
+      
+      // 设置错误上下文
+      this.setContext({
+        requestId: ctx.requestId,
+        path: ctx.originalPath || '/',
+        method: ctx.method,
+        userAgent: ctx.get('User-Agent'),
+        startTime: ctx.startTime,
+        endTime: Date.now(),
+        duration: Date.now() - ctx.startTime
+      });
+      
+      // 记录日志
       this.log(ctx);
+      
+      // 设置响应类型
       ctx.type = ctx.encoding !== false ? `application/json; charset=${ctx.encoding}` : 'application/json';
+      
       return this.output(ctx);
     } catch (error) {
-      Logger.Error(error);
+      Logger.Error('Exception handler failed:', error);
+      
+      // 降级处理 - 返回基本错误响应
+      return this.fallbackOutput(ctx, error);
     }
   }
 
   /**
-   * @description: logger
+   * @description: 降级输出处理
    * @param {KoattyContext} ctx
-   * @return {*}
+   * @param {unknown} _error
+   * @return {any}
    */
-  protected log(ctx: KoattyContext) {
-    const now = Date.now();
-    const stackMessage = this.stack ? `,stack:"${this.stack}"` : '';
-    const message = `{"startTime":"${ctx.startTime}","duration":"${now - ctx.startTime}","requestId":"${ctx.requestId}","endTime":"${now}","path":"${ctx.originalPath || '/'}","message":"${this.message}"${stackMessage}}`;
+  private fallbackOutput(ctx: KoattyContext, _error: unknown): any {
+    const isGrpc = ctx.protocol === 'grpc';
+    const isWebSocket = ctx.protocol === 'ws' || ctx.protocol === 'wss';
+    
+    const fallbackResponse: { code: number; message: string; data: null } = {
+      code: 500,
+      message: "Internal Server Error",
+      data: null
+    };
 
-    Logger.Error(message);
-    // span
-    if (this.span) {
-      this.span.setStatus({ code: SpanStatusCode.ERROR, message: message });
-      this.span.setAttribute(SemanticAttributes.HTTP_STATUS_CODE, ctx.status);
-      this.span.setAttribute(SemanticAttributes.HTTP_METHOD, ctx.method);
-      this.span.setAttribute(SemanticAttributes.HTTP_URL, ctx.url);    }
+    if (isGrpc) {
+      return ctx.rpc.callback({
+        code: 13, // INTERNAL
+        details: JSON.stringify(fallbackResponse)
+      }, null);
+    }
+
+    const body = JSON.stringify(fallbackResponse);
+    ctx.length = Buffer.byteLength(body);
+
+    if (isWebSocket) {
+      return ctx.websocket.send(body);
+    }
+
+    return ctx.res.end(body);
   }
 
   /**
-   * @description: 
+   * @description: 结构化日志记录
    * @param {KoattyContext} ctx
-   * @return {*}
+   * @return {void}
+   */
+  protected log(ctx: KoattyContext): void {
+    const config = getExceptionConfig();
+    const logData = {
+      timestamp: new Date().toISOString(),
+      level: 'ERROR',
+      type: this.type,
+      message: this.message,
+      code: this.code,
+      status: this.status,
+      context: this.context || {
+        requestId: ctx.requestId,
+        path: ctx.originalPath || '/',
+        method: ctx.method,
+        startTime: ctx.startTime,
+        duration: Date.now() - ctx.startTime,
+        endTime: Date.now()
+      },
+      ...(config.enableStackTrace && this.stack && { stack: this.stack })
+    };
+
+    // 根据配置决定日志格式
+    const logMessage = config.logFormat === 'json' 
+      ? JSON.stringify(logData, null, 2)
+      : this.formatTextLog(logData);
+
+    Logger.Error(logMessage);
+
+    // 更新链路追踪信息
+    this.updateSpan(ctx);
+  }
+
+  /**
+   * Format log as text
+   * 
+   * @param {any} logData - Log data object
+   * @returns {string} Formatted text log
+   */
+  private formatTextLog(logData: any): string {
+    const { timestamp, level, type, message, code, status, context, stack } = logData;
+    let log = `[${timestamp}] ${level}: ${type} - ${message} (code: ${code}, status: ${status})`;
+    
+    if (context) {
+      log += `\n  Context: ${JSON.stringify(context)}`;
+    }
+    
+    if (stack) {
+      log += `\n  Stack: ${stack}`;
+    }
+    
+    return log;
+  }
+
+  /**
+   * Update OpenTelemetry span with error information
+   * 
+   * @param {KoattyContext} ctx - Koatty context
+   */
+  private updateSpan(ctx: KoattyContext): void {
+    if (this.span) {
+      this.span.setStatus({ 
+        code: SpanStatusCode.ERROR, 
+        message: this.message 
+      });
+      this.span.setAttribute(SemanticAttributes.HTTP_STATUS_CODE, ctx.status);
+      this.span.setAttribute(SemanticAttributes.HTTP_METHOD, ctx.method);
+      this.span.setAttribute(SemanticAttributes.HTTP_URL, ctx.url);
+      this.span.setAttribute('error.code', this.code);
+      this.span.setAttribute('error.type', this.type);
+    }
+  }
+
+  /**
+   * @description: 输出处理
+   * @param {KoattyContext} ctx
+   * @return {any}
    */
   protected output(ctx: KoattyContext): any {
+    const config = getExceptionConfig();
     const isGrpc = ctx.protocol === 'grpc';
     const isWebSocket = ctx.protocol === 'ws' || ctx.protocol === 'wss';
-    const responseBody = this.message || "";
+    
+    // 使用自定义格式或默认格式
+    const responseBody = config.customErrorFormat 
+      ? config.customErrorFormat(this)
+      : this.message || "";
 
     if (isGrpc) {
       if (this.code < 2) {
@@ -178,6 +392,25 @@ export class Exception extends Error {
     }
 
     return ctx.res.end(body);
+  }
+
+  /**
+   * Convert exception to plain object
+   * 
+   * @returns {object} Plain object representation
+   */
+  toJSON(): object {
+    const config = getExceptionConfig();
+    return {
+      type: this.type,
+      name: this.name,
+      message: this.message,
+      code: this.code,
+      status: this.status,
+      timestamp: this.timestamp,
+      context: this.context,
+      ...(config.enableStackTrace && this.stack && { stack: this.stack })
+    };
   }
 }
 
