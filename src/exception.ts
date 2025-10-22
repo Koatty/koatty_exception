@@ -12,7 +12,7 @@ import { DefaultLogger as Logger } from "koatty_logger";
 import { Span, SpanStatusCode,  } from "@opentelemetry/api";
 import { StatusCodeConvert } from "./code";
 import { Output } from "./output";
-import { SemanticAttributes } from "@opentelemetry/semantic-conventions";
+import { ATTR_HTTP_REQUEST_METHOD, ATTR_HTTP_RESPONSE_STATUS_CODE, ATTR_URL_FULL } from "@opentelemetry/semantic-conventions";
 
 /**
  * Exception configuration interface
@@ -351,9 +351,9 @@ export class Exception extends Error {
         code: SpanStatusCode.ERROR, 
         message: this.message 
       });
-      this.span.setAttribute(SemanticAttributes.HTTP_STATUS_CODE, ctx.status);
-      this.span.setAttribute(SemanticAttributes.HTTP_METHOD, ctx.method);
-      this.span.setAttribute(SemanticAttributes.HTTP_URL, ctx.url);
+      this.span.setAttribute(ATTR_HTTP_RESPONSE_STATUS_CODE, ctx.status);
+      this.span.setAttribute(ATTR_HTTP_REQUEST_METHOD, ctx.method);
+      this.span.setAttribute(ATTR_URL_FULL, ctx.url);
       this.span.setAttribute('error.code', this.code);
       this.span.setAttribute('error.type', this.type);
     }
